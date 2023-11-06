@@ -13,6 +13,7 @@ class Slocale {
     strategy = exports.MissingStrategyType.RETURN_KEY;
     constructor() {
         //
+        this.t = this.t.bind(this);
     }
     loadLocaleMap(localeMap) {
         this.localeMap = localeMap;
@@ -44,7 +45,7 @@ class Slocale {
     setMissingStrategy(strategy) {
         this.strategy = strategy;
     }
-    find(key) {
+    t(key) {
         let node = this.localeMap;
         for (const token of key.split(this.seperator)) {
             node = node[token] ?? null;

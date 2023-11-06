@@ -19,5 +19,5 @@ export declare class Slocale {
     setSeperator(seperator: string): void;
     getSeperator(): string;
     setMissingStrategy(strategy: symbol): void;
-    find(key: string): any;
+    t(key: string): any;
 }
