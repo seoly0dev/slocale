@@ -8,6 +8,7 @@ export declare class Slocale {
     private localeMap;
     private seperator;
     private strategy;
+    private self;
     constructor();
     loadLocaleMap(localeMap: object): void;
     setLocaleList(list: Array<string>): void;
@@ -18,6 +19,8 @@ export declare class Slocale {
     getLocaleIndex(): number;
     setSeperator(seperator: string): void;
     getSeperator(): string;
+    setSelfKey(self: string): void;
+    getSelfKey(): string;
     setMissingStrategy(strategy: symbol): void;
-    t(key: string): any;
+    t(key: string): string;
 }

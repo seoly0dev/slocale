@@ -11,8 +11,8 @@ class Slocale {
     localeMap = {};
     seperator = '.';
     strategy = exports.MissingStrategyType.RETURN_KEY;
+    self = '_';
     constructor() {
-        //
         this.t = this.t.bind(this);
     }
     loadLocaleMap(localeMap) {
@@ -42,6 +42,12 @@ class Slocale {
     getSeperator() {
         return this.seperator;
     }
+    setSelfKey(self) {
+        this.self = self;
+    }
+    getSelfKey() {
+        return this.self;
+    }
     setMissingStrategy(strategy) {
         this.strategy = strategy;
     }
@@ -52,7 +58,15 @@ class Slocale {
             if (node == null)
                 return this.strategy == exports.MissingStrategyType.RETURN_KEY_FULL_KEY ? key : token;
         }
-        return node[this.localeIndex];
+        const target = node[this.localeIndex];
+        if (typeof target == 'string')
+            return target;
+        try {
+            return target[this.self];
+        }
+        catch (e) {
+            throw Error;
+        }
     }
 }
 exports.Slocale = Slocale;
