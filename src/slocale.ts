@@ -52,17 +52,15 @@ export class Slocale {
   }
   t(key: string): string {
     let node = this.localeMap
-    for (const token of key.split(this.seperator)) {
+    const keySplit = key.split(this.seperator)
+    for (const token of keySplit) {
       node = node[token] ?? null
       if (node == null) return this.strategy == MissingStrategyType.RETURN_KEY_FULL_KEY ? key : token
     }
-    const target = node[this.localeIndex]
-    if (typeof target == 'string') return target
 
-    try {
-      return target[this.self]
-    } catch (e) {
-      throw Error
-    }
+    let result = node[this.self] ? node[this.self][this.localeIndex] : node[this.localeIndex]
+    if (result == null) return this.strategy == MissingStrategyType.RETURN_KEY_FULL_KEY ? key : keySplit[keySplit.length - 1]
+
+    return result
   }
 }
