@@ -9,9 +9,9 @@ export class Slocale {
   private localeMap = {}
   private seperator = '.'
   private strategy = MissingStrategyType.RETURN_KEY
+  private self = '_'
 
   constructor() {
-    //
     this.t = this.t.bind(this)
   }
   loadLocaleMap(localeMap: object) {
@@ -41,15 +41,28 @@ export class Slocale {
   getSeperator() {
     return this.seperator
   }
+  setSelfKey(self: string) {
+    this.self = self
+  }
+  getSelfKey() {
+    return this.self
+  }
   setMissingStrategy(strategy: symbol) {
     this.strategy = strategy
   }
-  t(key: string) {
+  t(key: string): string {
     let node = this.localeMap
     for (const token of key.split(this.seperator)) {
       node = node[token] ?? null
       if (node == null) return this.strategy == MissingStrategyType.RETURN_KEY_FULL_KEY ? key : token
     }
-    return node[this.localeIndex]
+    const target = node[this.localeIndex]
+    if (typeof target == 'string') return target
+
+    try {
+      return target[this.self]
+    } catch (e) {
+      throw Error
+    }
   }
 }
